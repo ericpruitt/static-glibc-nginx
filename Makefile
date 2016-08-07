@@ -8,7 +8,7 @@ NGINX_SOURCE=http://nginx.org/download/nginx-1.9.2.tar.gz
 # URL of OpenSSL source tarball
 OPENSSL_SOURCE=http://www.openssl.org/source/openssl-1.0.1p.tar.gz
 # URL of PCRE source tarball
-PCRE_SOURCE=http://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-8.37.tar.gz
+PCRE_SOURCE=http://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-8.39.tar.gz
 
 all: nginx/nginx
 
@@ -80,7 +80,7 @@ nginx:
 	mkdir -p $@
 
 nginx/nginx: nginx pcre .nginx-patched .openssl-patched
-	cd src && ./configure --with-cc-opt=-static --with-ld-opt=-static \
+	cd src && ./configure --with-cc-opt=-Bstatic --with-ld-opt=-Bstatic \
 		--with-cpu-opt=generic --with-pcre=../pcre --with-mail \
 		--with-ipv6 --with-poll_module --with-select_module \
 		--with-select_module --with-poll_module --with-http_ssl_module \
