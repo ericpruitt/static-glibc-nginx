@@ -80,7 +80,7 @@ nginx:
 	mkdir -p $@
 
 nginx/nginx: nginx pcre .nginx-patched .openssl-patched
-	cd src && ./configure --with-cc-opt=-static --with-ld-opt=-static \
+	cd src && ./configure --with-cc-opt=-Bstatic --with-ld-opt=-Bstatic \
 		--with-cpu-opt=generic --with-pcre=../pcre --with-mail \
 		--with-ipv6 --with-poll_module --with-select_module \
 		--with-select_module --with-poll_module --with-http_ssl_module \
