@@ -8,7 +8,7 @@ NGINX_SOURCE=http://nginx.org/download/nginx-1.9.2.tar.gz
 # URL of OpenSSL source tarball
 OPENSSL_SOURCE=http://www.openssl.org/source/openssl-1.0.1p.tar.gz
 # URL of PCRE source tarball
-PCRE_SOURCE=http://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-8.37.tar.gz
+PCRE_SOURCE=http://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-8.39.tar.gz
 
 all: nginx/nginx
 
