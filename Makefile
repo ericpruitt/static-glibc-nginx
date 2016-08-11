@@ -83,8 +83,7 @@ nginx/nginx: nginx pcre .nginx-patched .openssl-patched
 	cd src && ./configure --with-cc-opt=-static --with-ld-opt=-static \
 		--with-cpu-opt=generic --with-pcre=../pcre --with-mail \
 		--with-ipv6 --with-poll_module --with-select_module \
-		--with-select_module --with-poll_module --with-http_ssl_module \
-		--with-http_realip_module \
+		--with-http_ssl_module --with-http_realip_module \
 		--with-http_addition_module --with-http_sub_module \
 		--with-http_dav_module --with-http_flv_module \
 		--with-http_mp4_module --with-http_gunzip_module \
