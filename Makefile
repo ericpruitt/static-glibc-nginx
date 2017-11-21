@@ -85,7 +85,7 @@ nginx/nginx: nginx openssl pcre .nginx-patched
 		--with-mail --with-mail_ssl_module \
 		--with-openssl=../openssl --conf-path=./nginx.conf \
 		--pid-path=./nginx.pid --sbin-path=. --prefix=../nginx
-	cd src && $(MAKE) -j1
+	cd src && $(MAKE)
 	cd src && $(MAKE) install
 
 .PHONY: all clean cleaner amroot deps
