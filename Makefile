@@ -72,19 +72,38 @@ nginx:
 	mkdir -p $@
 
 nginx/nginx: nginx openssl pcre .nginx-patched
-	cd src && ./configure --with-cc-opt=-static --with-ld-opt=-static \
-		--with-cpu-opt=generic --with-pcre=../pcre --with-mail \
-		--with-ipv6 --with-poll_module --with-select_module \
-		--with-http_ssl_module --with-http_realip_module \
-		--with-http_addition_module --with-http_sub_module \
-		--with-http_dav_module --with-http_flv_module \
-		--with-http_mp4_module --with-http_gunzip_module \
-		--with-http_gzip_static_module --with-http_auth_request_module \
-		--with-http_random_index_module --with-http_secure_link_module \
-		--with-http_degradation_module --with-http_stub_status_module \
-		--with-mail --with-mail_ssl_module \
-		--with-openssl=../openssl --conf-path=./nginx.conf \
-		--pid-path=./nginx.pid --sbin-path=. --prefix=../nginx
+	cd src && \
+	./configure \
+		--conf-path=./nginx.conf \
+		--pid-path=./nginx.pid \
+		--prefix=../nginx \
+		--sbin-path=. \
+		--with-cc-opt=-static \
+		--with-cpu-opt=generic \
+		--with-http_addition_module \
+		--with-http_auth_request_module \
+		--with-http_dav_module \
+		--with-http_degradation_module \
+		--with-http_flv_module \
+		--with-http_gunzip_module \
+		--with-http_gzip_static_module \
+		--with-http_mp4_module \
+		--with-http_random_index_module \
+		--with-http_realip_module \
+		--with-http_secure_link_module \
+		--with-http_ssl_module \
+		--with-http_stub_status_module \
+		--with-http_sub_module \
+		--with-ipv6 \
+		--with-ld-opt=-static \
+		--with-mail \
+		--with-mail \
+		--with-mail_ssl_module \
+		--with-openssl=../openssl \
+		--with-pcre=../pcre \
+		--with-poll_module \
+		--with-select_module \
+	;
 	cd src && $(MAKE)
 	cd src && $(MAKE) install
 
