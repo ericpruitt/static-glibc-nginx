@@ -1,5 +1,5 @@
-static-nginx
-============
+static-glibc-nginx
+==================
 
 This repository contains a Makefile and patches to produce a fully statically
 linked nginx binary. To achieve this, functions depending on

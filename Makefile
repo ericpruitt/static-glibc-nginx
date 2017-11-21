@@ -45,7 +45,7 @@ src: nginx.tar.gz
 	touch $@
 
 .nginx-patched: src/src/core/nginx.c
-	cd src && patch -p1 < ../static-nginx.patch
+	cd src && patch -p1 < ../static-glibc-nginx.patch
 	touch $@
 
 src/src/core/nginx.c: src
