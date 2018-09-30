@@ -322,10 +322,10 @@ index 96a04fd..4ab2f7f 100644
  ngx_int_t
  ngx_cmp_sockaddr(struct sockaddr *sa1, socklen_t slen1,
 diff --git a/src/os/unix/ngx_process_cycle.c b/src/os/unix/ngx_process_cycle.c
-index c69932e..5e47683 100644
+index 5817a2c..8262993 100644
 --- a/src/os/unix/ngx_process_cycle.c
 +++ b/src/os/unix/ngx_process_cycle.c
-@@ -850,12 +850,6 @@ ngx_worker_process_init(ngx_cycle_t *cycle, ngx_int_t worker)
+@@ -833,12 +833,6 @@ ngx_worker_process_init(ngx_cycle_t *cycle, ngx_int_t worker)
              exit(2);
          }
  
@@ -335,6 +335,6 @@ index c69932e..5e47683 100644
 -                          ccf->username, ccf->group);
 -        }
 -
-         if (setuid(ccf->user) == -1) {
-             ngx_log_error(NGX_LOG_EMERG, cycle->log, ngx_errno,
-                           "setuid(%d) failed", ccf->user);
+ #if (NGX_HAVE_PR_SET_KEEPCAPS && NGX_HAVE_CAPABILITIES)
+         if (ccf->transparent && ccf->user) {
+             if (prctl(PR_SET_KEEPCAPS, 1, 0, 0, 0) == -1) {

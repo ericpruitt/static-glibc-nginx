@@ -4,11 +4,11 @@
 #       binary without any dependencies on the host system's version of glibc.
 
 # URL of nginx source tarball
-NGINX_SOURCE=http://nginx.org/download/nginx-1.13.7.tar.gz
+NGINX_SOURCE=http://nginx.org/download/nginx-1.15.3.tar.gz
 # URL of OpenSSL source tarball
-OPENSSL_SOURCE=http://www.openssl.org/source/openssl-1.0.2m.tar.gz
+OPENSSL_SOURCE=https://www.openssl.org/source/openssl-1.0.2p.tar.gz
 # URL of PCRE source tarball
-PCRE_SOURCE=http://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-8.41.tar.gz
+PCRE_SOURCE=https://ftp.pcre.org/pub/pcre/pcre-8.42.tar.gz
 
 all: nginx/nginx
 
@@ -94,9 +94,9 @@ nginx/nginx: nginx openssl pcre .nginx-patched
 		--with-http_ssl_module \
 		--with-http_stub_status_module \
 		--with-http_sub_module \
+		--with-http_v2_module \
 		--with-ipv6 \
 		--with-ld-opt=-static \
-		--with-mail \
 		--with-mail \
 		--with-mail_ssl_module \
 		--with-openssl=../openssl \
