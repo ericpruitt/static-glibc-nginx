@@ -74,9 +74,9 @@ nginx:
 nginx/nginx: nginx openssl pcre .nginx-patched
 	cd src && \
 	./configure \
-		--conf-path=./nginx.conf \
-		--pid-path=./nginx.pid \
-		--prefix=../nginx \
+		--conf-path=nginx.conf \
+		--pid-path=nginx.pid \
+		--prefix=. \
 		--sbin-path=. \
 		--with-cc-opt=-static \
 		--with-cpu-opt=generic \
