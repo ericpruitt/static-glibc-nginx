@@ -2,6 +2,8 @@
 # License: 2-Clause BSD (http://opensource.org/licenses/BSD-2-Clause)
 # Description: This Makefile is designed to create a statically linked nginx
 #       binary without any dependencies on the host system's version of glibc.
+.POSIX:
+.SILENT: amroot deps
 
 # URL of nginx source tarball
 NGINX_SOURCE=http://nginx.org/download/nginx-1.15.3.tar.gz
@@ -13,22 +15,21 @@ PCRE_SOURCE=https://ftp.pcre.org/pub/pcre/pcre-8.42.tar.gz
 all: nginx/nginx
 
 amroot:
-	@if [ "$$(id -u)" -ne 0 ]; then \
+	if [ "$$(id -u)" -ne 0 ]; then \
 		echo "Must be root to install dependencies."; \
 		exit 1; \
 	fi
 
-ifeq (/etc/debian_version, $(wildcard /etc/debian_version))
 deps: amroot
-	apt-get install libxslt1-dev libxml2-dev zlib1g-dev libbz2-dev
-else ifeq (/etc/redhat-release, $(wildcard /etc/redhat-release))
-deps: amroot
-	yum -y install gcc gcc-c++ make zlib-devel
-else
-deps:
-	echo "Linux distribution not supported; install dependencies manually."
-	exit 1
-endif
+	if [ -e /etc/debian_version ]; then \
+		apt-get install libxslt1-dev libxml2-dev zlib1g-dev libbz2-dev; \
+	elif [ -e /etc/redhat-release ]; then \
+		yum -y install gcc gcc-c++ make zlib-devel; \
+	else \
+		echo "Linux distribution not supported;" \
+		     "install dependencies manually."; \
+		exit 1; \
+	fi
 
 clean:
 	rm -rf .*-patched src pcre openssl nginx
@@ -40,12 +41,12 @@ nginx.tar.gz:
 	wget -O $@ $(NGINX_SOURCE)
 
 src: nginx.tar.gz
-	tar xf $<
+	tar xf $?
 	mv nginx-*/ $@
 	touch $@
 
 .nginx-patched: src/src/core/nginx.c
-	cd src && patch -p1 < ../static-glibc-nginx.patch
+	(cd src && patch -p1 < ../static-glibc-nginx.patch)
 	touch $@
 
 src/src/core/nginx.c: src
@@ -54,7 +55,7 @@ pcre.tar.gz:
 	wget -O $@ $(PCRE_SOURCE)
 
 pcre: pcre.tar.gz
-	tar xf $<
+	tar xf $?
 	mv pcre*/ $@
 	touch $@
 
@@ -62,7 +63,7 @@ openssl.tar.gz:
 	wget -O $@ $(OPENSSL_SOURCE)
 
 openssl: openssl.tar.gz
-	tar xf $<
+	tar xf $?
 	mv openssl*/ $@
 	touch $@
 
@@ -72,7 +73,7 @@ nginx:
 	mkdir -p $@
 
 nginx/nginx: nginx openssl pcre .nginx-patched
-	cd src && \
+	(cd src && \
 	./configure \
 		--conf-path=nginx.conf \
 		--pid-path=nginx.pid \
@@ -103,8 +104,8 @@ nginx/nginx: nginx openssl pcre .nginx-patched
 		--with-pcre=../pcre \
 		--with-poll_module \
 		--with-select_module \
-	;
-	cd src && $(MAKE)
-	cd src && $(MAKE) install
+	)
+	(cd src && $(MAKE))
+	(cd src && $(MAKE) install)
 
 .PHONY: all clean cleaner amroot deps
