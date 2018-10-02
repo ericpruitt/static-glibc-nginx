@@ -106,6 +106,6 @@ nginx/nginx: nginx openssl pcre .nginx-patched
 		--with-select_module \
 	)
 	(cd src && $(MAKE))
-	(cd src && $(MAKE) install)
+	(cd src && $(MAKE) DESTDIR=$(PWD)/nginx/ install)
 
 .PHONY: all clean cleaner amroot deps
