@@ -12,7 +12,9 @@ OPENSSL_SOURCE=https://www.openssl.org/source/openssl-1.0.2p.tar.gz
 # URL of PCRE source tarball
 PCRE_SOURCE=https://ftp.pcre.org/pub/pcre/pcre-8.42.tar.gz
 
-all: nginx/nginx
+WGET = wget --no-use-server-timestamps
+
+all: nginx/.FOLDER
 
 amroot:
 	if [ "$$(id -u)" -ne 0 ]; then \
@@ -38,39 +40,38 @@ cleaner: clean
 	rm -f nginx.tar.gz pcre.tar.gz openssl.tar.gz
 
 nginx.tar.gz:
-	wget -O $@ $(NGINX_SOURCE)
+	$(WGET) -O $@ $(NGINX_SOURCE)
 
 src: nginx.tar.gz
 	tar xf $?
 	mv nginx-*/ $@
 	touch $@
 
-.nginx-patched: src/src/core/nginx.c
+src/.PATCHED: src/src/core/nginx.c
 	(cd src && patch -p1 < ../static-glibc-nginx.patch)
 	touch $@
 
 src/src/core/nginx.c: src
 
 pcre.tar.gz:
-	wget -O $@ $(PCRE_SOURCE)
+	$(WGET) -O $@ $(PCRE_SOURCE)
 
-pcre: pcre.tar.gz
+pcre/.FOLDER: pcre.tar.gz
 	tar xf $?
-	mv pcre*/ $@
+	mv pcre*/ $(@D)
 	touch $@
 
 openssl.tar.gz:
-	wget -O $@ $(OPENSSL_SOURCE)
+	$(WGET) -O $@ $(OPENSSL_SOURCE)
 
-openssl: openssl.tar.gz
+openssl/.FOLDER: openssl.tar.gz
 	tar xf $?
-	mv openssl*/ $@
+	mv openssl*/ $(@D)
 	touch $@
 
-openssl/Makefile.org: openssl
+openssl/Makefile.org: openssl/.FOLDER
 
-nginx/nginx: openssl pcre .nginx-patched
-	mkdir -p $(@D)
+src/Makefile: openssl/.FOLDER pcre/.FOLDER src/.PATCHED
 	(cd src && \
 	./configure \
 		--conf-path=nginx.conf \
@@ -103,8 +104,14 @@ nginx/nginx: openssl pcre .nginx-patched
 		--with-poll_module \
 		--with-select_module \
 	)
+
+src/objs/nginx: src/Makefile
 	(cd src && $(MAKE))
-	(cd src && $(MAKE) DESTDIR=$(PWD)/nginx/ install)
+
+nginx/.FOLDER: src/objs/nginx
+	mkdir -p $(@D)
+	(cd src && $(MAKE) DESTDIR=$(PWD)/$(@D)/ install)
 	(cd $(@D) && rm -f *.default koi-win koi-utf win-utf)
+	touch $@
 
 .PHONY: all clean cleaner amroot deps
