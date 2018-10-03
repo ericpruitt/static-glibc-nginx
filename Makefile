@@ -5,12 +5,9 @@
 .POSIX:
 .SILENT: amroot deps
 
-# URL of nginx source tarball
-NGINX_SOURCE=http://nginx.org/download/nginx-1.15.3.tar.gz
-# URL of OpenSSL source tarball
-OPENSSL_SOURCE=https://www.openssl.org/source/openssl-1.0.2p.tar.gz
-# URL of PCRE source tarball
-PCRE_SOURCE=https://ftp.pcre.org/pub/pcre/pcre-8.42.tar.gz
+NGINX_TAR_GZ = http://nginx.org/download/nginx-1.15.3.tar.gz
+OPENSSL_TAR_GZ = https://www.openssl.org/source/openssl-1.0.2p.tar.gz
+PCRE_TAR_GZ = https://ftp.pcre.org/pub/pcre/pcre-8.42.tar.gz
 
 WGET = wget --no-use-server-timestamps
 
@@ -40,10 +37,10 @@ cleaner: clean
 	rm -f nginx.tar.gz pcre.tar.gz openssl.tar.gz
 
 nginx.tar.gz:
-	$(WGET) -O $@ $(NGINX_SOURCE)
+	$(WGET) -O $@ $(NGINX_TAR_GZ)
 
 src: nginx.tar.gz
-	tar xf $?
+	tar -x -z -f $?
 	mv nginx-*/ $@
 	touch $@
 
@@ -54,18 +51,18 @@ src/.PATCHED: src/src/core/nginx.c
 src/src/core/nginx.c: src
 
 pcre.tar.gz:
-	$(WGET) -O $@ $(PCRE_SOURCE)
+	$(WGET) -O $@ $(PCRE_TAR_GZ)
 
 pcre/.FOLDER: pcre.tar.gz
-	tar xf $?
+	tar -x -z -f $?
 	mv pcre*/ $(@D)
 	touch $@
 
 openssl.tar.gz:
-	$(WGET) -O $@ $(OPENSSL_SOURCE)
+	$(WGET) -O $@ $(OPENSSL_TAR_GZ)
 
 openssl/.FOLDER: openssl.tar.gz
-	tar xf $?
+	tar -x -z -f $?
 	mv openssl*/ $(@D)
 	touch $@
 
