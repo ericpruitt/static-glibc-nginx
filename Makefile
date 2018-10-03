@@ -115,5 +115,3 @@ nginx/.FOLDER: src/objs/nginx
 	(cd src && $(MAKE) DESTDIR=$(PWD)/$(@D)/ install)
 	(cd $(@D) && rm -f *.default koi-win koi-utf win-utf)
 	touch $@
-
-.PHONY: all clean cleaner amroot deps
