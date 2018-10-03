@@ -73,6 +73,7 @@ openssl/Makefile.org: openssl/.FOLDER
 
 src/Makefile: openssl/.FOLDER pcre/.FOLDER src/.PATCHED
 	(cd src && \
+	CFLAGS="$(CFLAGS) -DNGX_HAVE_DLOPEN=0" \
 	./configure \
 		--conf-path=nginx.conf \
 		--pid-path=nginx.pid \
