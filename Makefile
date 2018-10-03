@@ -69,10 +69,8 @@ openssl: openssl.tar.gz
 
 openssl/Makefile.org: openssl
 
-nginx:
-	mkdir -p $@
-
-nginx/nginx: nginx openssl pcre .nginx-patched
+nginx/nginx: openssl pcre .nginx-patched
+	mkdir -p $(@D)
 	(cd src && \
 	./configure \
 		--conf-path=nginx.conf \
