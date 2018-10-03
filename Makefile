@@ -100,6 +100,7 @@ src/Makefile: openssl/.FOLDER pcre/.FOLDER src/.PATCHED
 		--with-ld-opt=-static \
 		--with-mail \
 		--with-mail_ssl_module \
+		--with-openssl-opt="-UDSO_DLFCN" \
 		--with-openssl=../openssl \
 		--with-pcre=../pcre \
 		--with-poll_module \
