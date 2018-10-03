@@ -105,5 +105,6 @@ nginx/nginx: openssl pcre .nginx-patched
 	)
 	(cd src && $(MAKE))
 	(cd src && $(MAKE) DESTDIR=$(PWD)/nginx/ install)
+	(cd $(@D) && rm -f *.default koi-win koi-utf win-utf)
 
 .PHONY: all clean cleaner amroot deps
