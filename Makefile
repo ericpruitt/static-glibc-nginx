@@ -79,6 +79,7 @@ src/Makefile: openssl/.FOLDER pcre/.FOLDER src/.PATCHED zlib/.FOLDER
 		--pid-path=nginx.pid \
 		--prefix=. \
 		--sbin-path=. \
+		--with-cc="$(CC)" \
 		--with-cc-opt="$(CFLAGS) -static -D NGX_HAVE_DLOPEN=0" \
 		--with-cpu-opt=generic \
 		--with-http_addition_module \
@@ -97,7 +98,7 @@ src/Makefile: openssl/.FOLDER pcre/.FOLDER src/.PATCHED zlib/.FOLDER
 		--with-http_sub_module \
 		--with-http_v2_module \
 		--with-ipv6 \
-		--with-ld-opt=-static \
+		--with-ld-opt="$(LDFLAGS) -static" \
 		--with-mail \
 		--with-mail_ssl_module \
 		--with-openssl-opt="-UDSO_DLFCN" \
