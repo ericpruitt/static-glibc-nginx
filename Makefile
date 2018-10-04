@@ -74,13 +74,12 @@ zlib/.FOLDER: zlib.tar.gz
 
 src/Makefile: openssl/.FOLDER pcre/.FOLDER src/.PATCHED zlib/.FOLDER
 	(cd src && \
-	CFLAGS="$(CFLAGS) -DNGX_HAVE_DLOPEN=0" \
 	./configure \
 		--conf-path=nginx.conf \
 		--pid-path=nginx.pid \
 		--prefix=. \
 		--sbin-path=. \
-		--with-cc-opt=-static \
+		--with-cc-opt="$(CFLAGS) -static -D NGX_HAVE_DLOPEN=0" \
 		--with-cpu-opt=generic \
 		--with-http_addition_module \
 		--with-http_auth_request_module \
