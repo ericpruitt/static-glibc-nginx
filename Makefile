@@ -3,7 +3,7 @@
 # Description: This Makefile is designed to create a statically linked nginx
 #       binary without any dependencies on the host system's version of glibc.
 .POSIX:
-.SILENT: amroot deps
+.SILENT: deps
 
 NGINX_TAR_GZ = http://nginx.org/download/nginx-1.15.3.tar.gz
 OPENSSL_TAR_GZ = https://www.openssl.org/source/openssl-1.0.2p.tar.gz
@@ -14,20 +14,17 @@ WGET = wget --no-use-server-timestamps
 
 all: nginx/.FOLDER
 
-amroot:
+deps:
 	if [ "$$(id -u)" -ne 0 ]; then \
-		echo "Must be root to install dependencies."; \
+		echo "make $@: this recipe must be executed as root" >&2; \
 		exit 1; \
 	fi
-
-deps: amroot
 	if [ -e /etc/debian_version ]; then \
 		apt-get install libxslt1-dev libxml2-dev libbz2-dev; \
 	elif [ -e /etc/redhat-release ]; then \
 		yum -y install gcc gcc-c++ make; \
 	else \
-		echo "Linux distribution not supported;" \
-		     "install dependencies manually."; \
+		echo "make $@: Linux distribution not supported" >&2 \
 		exit 1; \
 	fi
 
