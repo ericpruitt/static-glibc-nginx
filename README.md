@@ -34,9 +34,6 @@ Some of the other targets provided by the Makefile include:
 - **clean**: Delete all folders created by this script.
 - **cleaner**: Delete all files created by this script which includes the
   downloaded tar-balls.
-- **deps**: Install dependencies required to compile NGINX. This target will
-  only work on Red Hat and Debian-based systems and must be used while running
-  as root.
 
 Attributions
 ------------
@@ -44,4 +41,3 @@ Attributions
 The following scripts were referenced when creating this project:
 
 - [Gist: nlindblad/build-nginx.sh](https://gist.github.com/nlindblad/9709182)
-- [Gist:  rjeczalik/building-static-nginx.txt](https://gist.github.com/rjeczalik/7057434)
