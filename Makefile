@@ -115,8 +115,7 @@ test:
 		nc -zw1 localhost 4475 && break; \
 		sleep 1; \
 	done; \
-	trap 'kill "$$nginx_pid"' EXIT && \
+	trap 'kill "$$nginx_pid"; rm -rf nginx/*_temp/' EXIT && \
 	curl -fsS http://localhost:4475/ >/dev/null || exit_status="$$?" && \
-	rm -rf nginx/*_temp/ && \
 	exit "$${exit_status:-0}"
 	@echo "make $@: test passed"
