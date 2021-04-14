@@ -106,6 +106,7 @@ nginx/.FOLDER: src/objs/nginx
 test:
 	@./nginx/nginx -c "$$PWD/test.conf" -e /dev/fd/1 -p nginx & \
 	nginx_pid="$$!" && \
+	trap 'kill "$$nginx_pid"; rm -rf nginx/*_temp/' EXIT && \
 	(sleep 0.05 >/dev/null 2>&1 || :) && \
 	if ! kill -1 "$$nginx_pid"; then \
 		echo "make $@: unable to start nginx" >&2; \
@@ -115,7 +116,6 @@ test:
 		nc -zw1 localhost 4475 && break; \
 		sleep 1; \
 	done; \
-	trap 'kill "$$nginx_pid"; rm -rf nginx/*_temp/' EXIT && \
 	curl -fsS http://localhost:4475/ >/dev/null || exit_status="$$?" && \
 	exit "$${exit_status:-0}"
 	@echo "make $@: test passed"
