@@ -102,3 +102,21 @@ nginx/.FOLDER: src/objs/nginx
 	(cd src && $(MAKE) DESTDIR=$(PWD)/$(@D)/ install)
 	(cd $(@D) && rm -f *.default koi-win koi-utf win-utf)
 	touch $@
+
+test:
+	@./nginx/nginx -c "$$PWD/test.conf" -e /dev/fd/1 -p nginx & \
+	nginx_pid="$$!" && \
+	(sleep 0.05 >/dev/null 2>&1 || :) && \
+	if ! kill -1 "$$nginx_pid"; then \
+		echo "make $@: unable to start nginx" >&2; \
+		exit 1; \
+	fi; \
+	for _ in 1 2 3; do \
+		nc -zw1 localhost 4475 && break; \
+		sleep 1; \
+	done; \
+	trap 'kill "$$nginx_pid"' EXIT && \
+	curl -fsS http://localhost:4475/ >/dev/null || exit_status="$$?" && \
+	rm -rf nginx/*_temp/ && \
+	exit "$${exit_status:-0}"
+	@echo "make $@: test passed"

@@ -34,6 +34,9 @@ Some of the other targets provided by the Makefile include:
 - **clean**: Delete all folders created by this script.
 - **cleaner**: Delete all files created by this script which includes the
   downloaded tar-balls.
+- **test:** Run a simple test of NGINX. The NGINX binary must already be built,
+  port 4475 must be available for use, and _curl(1)_ must be installed. This
+  target does not implicitly build NGINX.
 
 Attributions
 ------------
