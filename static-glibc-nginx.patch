@@ -1,7 +1,7 @@
-diff --git a/src/core/nginx.c b/src/core/nginx.c
+diff --git src/core/nginx.c src/core/nginx.c
 index 3213527..f61aed7 100644
---- a/src/core/nginx.c
-+++ b/src/core/nginx.c
+--- src/core/nginx.c
++++ src/core/nginx.c
 @@ -1030,29 +1030,10 @@ ngx_core_module_init_conf(ngx_cycle_t *cycle, void *conf)
  #if !(NGX_WIN32)
  
@@ -80,10 +80,10 @@ index 3213527..f61aed7 100644
  
  #endif
  }
-diff --git a/src/core/ngx_inet.c b/src/core/ngx_inet.c
+diff --git src/core/ngx_inet.c src/core/ngx_inet.c
 index 96a04fd..4ab2f7f 100644
---- a/src/core/ngx_inet.c
-+++ b/src/core/ngx_inet.c
+--- src/core/ngx_inet.c
++++ src/core/ngx_inet.c
 @@ -1111,95 +1111,9 @@
  }
  
@@ -229,10 +229,10 @@ index 96a04fd..4ab2f7f 100644
  
  static ngx_int_t
  ngx_inet_add_addr(ngx_pool_t *pool, ngx_url_t *u, struct sockaddr *sockaddr,
-diff --git a/src/os/unix/ngx_process_cycle.c b/src/os/unix/ngx_process_cycle.c
+diff --git src/os/unix/ngx_process_cycle.c src/os/unix/ngx_process_cycle.c
 index 5817a2c..8262993 100644
---- a/src/os/unix/ngx_process_cycle.c
-+++ b/src/os/unix/ngx_process_cycle.c
+--- src/os/unix/ngx_process_cycle.c
++++ src/os/unix/ngx_process_cycle.c
 @@ -833,12 +833,6 @@ ngx_worker_process_init(ngx_cycle_t *cycle, ngx_int_t worker)
              exit(2);
          }

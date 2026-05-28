@@ -1,0 +1,31 @@
+--- crypto/bio/bio_sock.c	2026-05-28 00:23:24.598104964 -0500
++++ crypto/bio/bio_sock.c	2026-05-28 00:31:29.290698322 -0500
+@@ -125,7 +125,7 @@
+      * Caching gethostbyname() results forever is wrong, so we have to let
+      * the true gethostbyname() worry about this
+      */
+-    return gethostbyname(name);
++    return ((h_errno = ENOSYS), NULL);
+ }
+ #endif
+ 
+--- crypto/bio/bio_addr.c	2026-05-28 00:23:29.562151625 -0500
++++ crypto/bio/bio_addr.c	2026-05-28 00:31:26.930675821 -0500
+@@ -738,7 +738,7 @@
+ #if defined(AI_ADDRCONFIG) && defined(AI_NUMERICHOST)
+     retry:
+ #endif
+-        switch ((gai_ret = getaddrinfo(host, service, &hints, res))) {
++        switch ((gai_ret = ((errno = ENOSYS), EAI_SYSTEM))) {
+ #ifdef EAI_SYSTEM
+         case EAI_SYSTEM:
+             ERR_raise_data(ERR_LIB_SYS, get_last_socket_error(),
+@@ -835,7 +835,7 @@
+                 goto err;
+             }
+         } else {
+-            he = gethostbyname(host);
++            he = ((h_errno = ENOSYS), NULL);
+ 
+             if (he == NULL) {
+ #ifndef OPENSSL_SYS_WINDOWS

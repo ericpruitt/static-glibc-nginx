@@ -4,10 +4,10 @@
 #       binary without any dependencies on the host system's version of glibc.
 .POSIX:
 
-NGINX_TAR_GZ = http://nginx.org/download/nginx-1.19.10.tar.gz
-OPENSSL_TAR_GZ = https://www.openssl.org/source/openssl-1.1.1j.tar.gz
-PCRE_TAR_GZ = https://ftp.pcre.org/pub/pcre/pcre-8.44.tar.gz
-ZLIB_TAR_GZ = http://zlib.net/zlib-1.2.11.tar.gz
+NGINX_TAR_GZ = http://nginx.org/download/nginx-1.30.1.tar.gz
+OPENSSL_TAR_GZ = https://github.com/openssl/openssl/releases/download/openssl-3.5.6/openssl-3.5.6.tar.gz
+PCRE_TAR_GZ = https://github.com/PCRE2Project/pcre2/releases/download/pcre2-10.47/pcre2-10.47.tar.gz
+ZLIB_TAR_GZ = http://zlib.net/zlib-1.3.2.tar.gz
 
 WGET = wget --no-use-server-timestamps
 
@@ -28,7 +28,7 @@ src: nginx.tar.gz
 	touch $@
 
 src/.PATCHED: src/src/core/nginx.c
-	(cd src && patch -p1 < ../static-glibc-nginx.patch)
+	(cd src && patch -p0 < ../static-glibc-nginx.patch)
 	touch $@
 
 src/src/core/nginx.c: src
@@ -47,6 +47,7 @@ openssl.tar.gz:
 openssl/.FOLDER: openssl.tar.gz
 	tar -x -z -f $?
 	mv openssl*/ $(@D)
+	(cd $(@D) && patch -p0 < ../static-glibc-openssl.patch)
 	touch $@
 
 zlib.tar.gz:
@@ -86,7 +87,7 @@ src/Makefile: openssl/.FOLDER pcre/.FOLDER src/.PATCHED zlib/.FOLDER
 		--with-ld-opt="$(LDFLAGS) -static" \
 		--with-mail \
 		--with-mail_ssl_module \
-		--with-openssl-opt="-UDSO_DLFCN" \
+		--with-openssl-opt="no-dso" \
 		--with-openssl=../openssl \
 		--with-pcre=../pcre \
 		--with-poll_module \
